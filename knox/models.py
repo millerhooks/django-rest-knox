@@ -16,7 +16,7 @@ class AuthTokenManager(models.Manager):
         if expires is not None:
              expires = timezone.now() + expires
 
-        auth_token = super(AuthTokenManager, self).create(digest=digest, salt=salt, user=user, expires=expires, token_slice=token[:15])
+        auth_token = super(AuthTokenManager, self).create(digest=digest, salt=salt, user=user, expires=expires, token_slice=token[:16])
         return token # Note only the token - not the AuthToken object - is returned
 
 class AuthToken(models.Model):
