@@ -16,7 +16,7 @@ class AuthTokenManager(models.Manager):
         if expires is not None:
              expires = timezone.now() + expires
 
-        auth_token = super(AuthTokenManager, self).create(digest=digest, salt=salt, user=user, expires=expires)
+        auth_token = super(AuthTokenManager, self).create(digest=digest, salt=salt, user=user, expires=expires, token_slice=token[:15])
         return token # Note only the token - not the AuthToken object - is returned
 
 class AuthToken(models.Model):
@@ -28,6 +28,7 @@ class AuthToken(models.Model):
     user = models.ForeignKey(User, null=False, blank=False, related_name="auth_token_set")
     created = models.DateTimeField(auto_now_add=True)
     expires = models. DateTimeField(null=True, blank=True)
+    token_slice = models.CharField(max_length=16, null=False)
 
     def __str__(self):
         return "%s : %s" % (self.digest, self.user)
